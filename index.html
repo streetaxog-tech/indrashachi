@@ -1,130 +1,163 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Indrashachi Astrology</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-  <style>
-    body, html { margin: 0; padding: 0; background: black; color: white; }
-    canvas { position: fixed; top: 0; left: 0; z-index: -1; }
-    .glass {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      backdrop-filter: blur(10px);
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Indrashachi Astrology</title>
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<style>
+  body, html { margin:0; padding:0; background:black; color:white; overflow-x:hidden; font-family:sans-serif; }
+  canvas { position:fixed; top:0; left:0; z-index:-1; }
+  .glass { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); backdrop-filter: blur(10px); }
+  .zodiac { font-size:16px; font-weight:bold; color:gold; text-shadow:0 0 6px #fff; position:absolute; }
+</style>
 </head>
-<body class="font-sans">
+<body>
 
-  <!-- Hero -->
-  <section class="h-screen flex flex-col justify-center items-center text-center relative">
-    <h1 class="text-5xl font-extrabold text-yellow-400 drop-shadow-lg">Indrashachi Astrology</h1>
-    <p class="mt-4 text-lg text-gray-300">Divine Guidance • Temple of Stars • Trusted Consultations</p>
-    <div class="mt-10">
-      <a href="#services" class="px-6 py-3 rounded-xl bg-yellow-500 hover:bg-yellow-600 text-black font-bold shadow-lg">
-        Explore Services
-      </a>
-    </div>
-  </section>
+<!-- Hero -->
+<section class="h-screen flex flex-col justify-center items-center text-center relative">
+  <h1 class="text-5xl font-extrabold text-yellow-400 drop-shadow-lg">Indrashachi Astrology</h1>
+  <p class="mt-4 text-lg text-gray-300">Divine Guidance • Temple of Stars • Trusted Consultations</p>
+  <div class="mt-10">
+    <a href="#services" class="px-6 py-3 rounded-xl bg-yellow-500 hover:bg-yellow-600 text-black font-bold shadow-lg">
+      Explore Services
+    </a>
+  </div>
+</section>
 
-  <!-- Services -->
-  <section id="services" class="py-16 container mx-auto px-6 grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-    <div class="glass p-6 rounded-2xl text-center shadow-xl">
-      <h3 class="text-2xl font-bold mb-2">Palmistry</h3>
-      <p class="text-gray-300">Hand reading & life insights.</p>
-      <p class="text-yellow-400 font-bold mt-3">₹299</p>
-    </div>
-    <div class="glass p-6 rounded-2xl text-center shadow-xl">
-      <h3 class="text-2xl font-bold mb-2">Kundali</h3>
-      <p class="text-gray-300">Detailed horoscope & remedies.</p>
-      <p class="text-yellow-400 font-bold mt-3">₹499</p>
-    </div>
-    <div class="glass p-6 rounded-2xl text-center shadow-xl">
-      <h3 class="text-2xl font-bold mb-2">Match Making</h3>
-      <p class="text-gray-300">Compatibility analysis for couples.</p>
-      <p class="text-yellow-400 font-bold mt-3">₹799</p>
-    </div>
-    <div class="glass p-6 rounded-2xl text-center shadow-xl">
-      <h3 class="text-2xl font-bold mb-2">Horoscope</h3>
-      <p class="text-gray-300">Daily & yearly astrology guidance.</p>
-      <p class="text-yellow-400 font-bold mt-3">₹399</p>
-    </div>
-  </section>
+<!-- Services -->
+<section id="services" class="py-16 container mx-auto px-6 grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+  <div class="glass p-6 rounded-2xl text-center shadow-xl">
+    <h3 class="text-2xl font-bold mb-2">Palmistry</h3>
+    <p class="text-gray-300">Hand reading & life insights.</p>
+    <p class="text-yellow-400 font-bold mt-3">₹299</p>
+  </div>
+  <div class="glass p-6 rounded-2xl text-center shadow-xl">
+    <h3 class="text-2xl font-bold mb-2">Kundali</h3>
+    <p class="text-gray-300">Detailed horoscope & remedies.</p>
+    <p class="text-yellow-400 font-bold mt-3">₹499</p>
+  </div>
+  <div class="glass p-6 rounded-2xl text-center shadow-xl">
+    <h3 class="text-2xl font-bold mb-2">Match Making</h3>
+    <p class="text-gray-300">Compatibility analysis for couples.</p>
+    <p class="text-yellow-400 font-bold mt-3">₹799</p>
+  </div>
+  <div class="glass p-6 rounded-2xl text-center shadow-xl">
+    <h3 class="text-2xl font-bold mb-2">Horoscope</h3>
+    <p class="text-gray-300">Daily & yearly astrology guidance.</p>
+    <p class="text-yellow-400 font-bold mt-3">₹399</p>
+  </div>
+</section>
 
-  <!-- Booking Form -->
-  <section id="book" class="py-16 container mx-auto px-6">
-    <div class="glass p-8 rounded-2xl max-w-lg mx-auto shadow-xl">
-      <h2 class="text-3xl font-bold mb-6 text-center">Book a Consultation</h2>
-      <form id="bookingForm" class="space-y-4">
-        <input type="text" id="name" placeholder="Your Name" class="w-full p-3 rounded-lg text-black" required>
-        <input type="date" id="dob" class="w-full p-3 rounded-lg text-black" required>
-        <select id="service" class="w-full p-3 rounded-lg text-black" required>
-          <option value="Palmistry" data-amount="29900">Palmistry — ₹299</option>
-          <option value="Kundali" data-amount="49900">Kundali — ₹499</option>
-          <option value="Match Making" data-amount="79900">Match Making — ₹799</option>
-          <option value="Horoscope" data-amount="39900">Horoscope — ₹399</option>
-        </select>
-        <button type="button" onclick="payNow()" class="w-full py-3 bg-yellow-500 hover:bg-yellow-600 text-black font-bold rounded-lg">Pay & Book</button>
-      </form>
-    </div>
-  </section>
+<!-- Booking Form -->
+<section id="book" class="py-16 container mx-auto px-6">
+  <div class="glass p-8 rounded-2xl max-w-lg mx-auto shadow-xl">
+    <h2 class="text-3xl font-bold mb-6 text-center">Book a Consultation</h2>
+    <form id="bookingForm" class="space-y-4">
+      <input type="text" id="name" placeholder="Your Name" class="w-full p-3 rounded-lg text-black" required>
+      <input type="date" id="dob" class="w-full p-3 rounded-lg text-black" required>
+      <select id="service" class="w-full p-3 rounded-lg text-black" required>
+        <option value="Palmistry" data-amount="29900">Palmistry — ₹299</option>
+        <option value="Kundali" data-amount="49900">Kundali — ₹499</option>
+        <option value="Match Making" data-amount="79900">Match Making — ₹799</option>
+        <option value="Horoscope" data-amount="39900">Horoscope — ₹399</option>
+      </select>
+      <button type="button" onclick="payNow()" class="w-full py-3 bg-yellow-500 hover:bg-yellow-600 text-black font-bold rounded-lg">Pay & Book</button>
+    </form>
+  </div>
+</section>
 
-  <!-- 3D Background Script -->
-  <script>
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-    const renderer = new THREE.WebGLRenderer({ alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
+<!-- 3D Background Script -->
+<script>
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+const renderer = new THREE.WebGLRenderer({ alpha: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
 
-    // Stars
-    const starGeometry = new THREE.BufferGeometry();
-    const starCount = 2000;
-    const starPositions = [];
-    for (let i=0; i<starCount; i++) {
-      starPositions.push((Math.random() - 0.5) * 2000);
-      starPositions.push((Math.random() - 0.5) * 2000);
-      starPositions.push((Math.random() - 0.5) * 2000);
+// Stars
+const starGeometry = new THREE.BufferGeometry();
+const starCount = 2000;
+const starPositions = [];
+for (let i=0; i<starCount; i++){
+  starPositions.push((Math.random()-0.5)*2000);
+  starPositions.push((Math.random()-0.5)*2000);
+  starPositions.push((Math.random()-0.5)*2000);
+}
+starGeometry.setAttribute("position", new THREE.Float32BufferAttribute(starPositions,3));
+const starMaterial = new THREE.PointsMaterial({color:0xffffff});
+const stars = new THREE.Points(starGeometry, starMaterial);
+scene.add(stars);
+
+// Zodiac Wheel
+const zodiacRadius = 2.5;
+const zodiacSymbols = ["♈","♉","♊","♋","♌","♍","♎","♏","♐","♑","♒","♓"];
+const zodiacMeshes = [];
+zodiacSymbols.forEach((sym,i)=>{
+  const loader = new THREE.FontLoader();
+  loader.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function(font){
+    const textGeom = new THREE.TextGeometry(sym,{font:font,size:0.3,height:0.05});
+    const textMat = new THREE.MeshBasicMaterial({color:0xffd700});
+    const mesh = new THREE.Mesh(textGeom,textMat);
+    const angle = (i/12)*Math.PI*2;
+    mesh.position.set(Math.cos(angle)*zodiacRadius, Math.sin(angle)*zodiacRadius, 0);
+    mesh.rotation.z = angle + Math.PI/2;
+    scene.add(mesh);
+    zodiacMeshes.push(mesh);
+  });
+});
+
+// Temple Pillars
+const pillarGeo = new THREE.CylinderGeometry(0.1,0.1,4,32);
+const pillarMat = new THREE.MeshBasicMaterial({color:0xffffcc});
+const leftPillar = new THREE.Mesh(pillarGeo,pillarMat);
+leftPillar.position.set(-3,-1,0);
+scene.add(leftPillar);
+const rightPillar = new THREE.Mesh(pillarGeo,pillarMat);
+rightPillar.position.set(3,-1,0);
+scene.add(rightPillar);
+
+// Glowing Orb
+const orbGeo = new THREE.SphereGeometry(0.5,32,32);
+const orbMat = new THREE.MeshBasicMaterial({color:0xffaa33});
+const orb = new THREE.Mesh(orbGeo,orbMat);
+scene.add(orb);
+
+camera.position.z = 7;
+
+function animate(){
+  requestAnimationFrame(animate);
+  stars.rotation.y += 0.0005;
+  zodiacMeshes.forEach(m=>m.rotation.z+=0.002);
+  orb.rotation.y += 0.01;
+  renderer.render(scene,camera);
+}
+animate();
+
+// Razorpay + WhatsApp
+function payNow(){
+  const name = document.getElementById("name").value;
+  const dob = document.getElementById("dob").value;
+  const serviceSelect = document.getElementById("service");
+  const service = serviceSelect.value;
+  const amount = serviceSelect.selectedOptions[0].getAttribute("data-amount");
+  const options = {
+    key:"rzp_test_1234567890", // <-- replace with your Razorpay Key
+    amount:amount,
+    currency:"INR",
+    name:"Indrashachi Astrology",
+    description:service,
+    handler:function(response){
+      alert("Payment Successful!");
+      const msg = `New Booking:%0AName: ${name}%0ADOB: ${dob}%0AService: ${service}%0APayment ID: ${response.razorpay_payment_id}`;
+      window.open(`https://wa.me/919226601792?text=${msg}`,"_blank");
     }
-    starGeometry.setAttribute("position", new THREE.Float32BufferAttribute(starPositions, 3));
-    const starMaterial = new THREE.PointsMaterial({ color: 0xffffff });
-    const stars = new THREE.Points(starGeometry, starMaterial);
-    scene.add(stars);
-
-    camera.position.z = 5;
-    function animate() {
-      requestAnimationFrame(animate);
-      stars.rotation.y += 0.0005;
-      renderer.render(scene, camera);
-    }
-    animate();
-
-    // Razorpay + WhatsApp
-    function payNow() {
-      const name = document.getElementById("name").value;
-      const dob = document.getElementById("dob").value;
-      const serviceSelect = document.getElementById("service");
-      const service = serviceSelect.value;
-      const amount = serviceSelect.selectedOptions[0].getAttribute("data-amount");
-
-      const options = {
-        key: "rzp_test_1234567890", // <-- apna Razorpay key id daalo
-        amount: amount,
-        currency: "INR",
-        name: "Indrashachi Astrology",
-        description: service,
-        handler: function (response) {
-          alert("Payment Successful!");
-          const msg = `New Booking:%0AName: ${name}%0ADOB: ${dob}%0AService: ${service}%0APayment ID: ${response.razorpay_payment_id}`;
-          window.open(`https://wa.me/919226601792?text=${msg}`, "_blank");
-        }
-      };
-      const rzp = new Razorpay(options);
-      rzp.open();
-    }
-  </script>
+  };
+  const rzp = new Razorpay(options);
+  rzp.open();
+}
+</script>
 </body>
 </html>
