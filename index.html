@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Indrashachi — Astrology Consultations</title>
+  <meta name="description" content="Indrashachi | Book astrology consultations" />
+  <style>
+    /* --- Basic layout & glassmorphism --- */
+    html,body { height:100%; margin:0; font-family: Inter, Arial, sans-serif; background:#05050a; color:#f7f7f7; }
+    #app { display:flex; min-height:100vh; align-items:center; justify-content:center; gap:32px; padding:24px; box-sizing:border-box; }
+    .left { flex:1 1 640px; max-width:960px; height:80vh; border-radius:16px; overflow:hidden; position:relative; box-shadow: 0 20px 60px rgba(0,0,0,.8); }
+    .right { width:380px; min-width:300px; align-self:flex-start; }
+    .card { background: linear-gradient(135deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.05); padding:18px; border-radius:14px; backdrop-filter: blur(6px); }
+    h1 { margin:0 0 8px 0; font-size:22px; letter-spacing:.4px; }
+    p.lead { margin:0 0 12px 0; color:#cfcfcf; font-size:13px; }
+    label { font-size:12px; color:#cfcfcf; display:block; margin-bottom:6px; }
+    input, select, textarea { width:100%; padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,0.06); background:rgba(10,10,14,0.6); color:#fff; margin-bottom:12px; box-sizing:border-box; font-size:13px; }
+    button { width:100%; padding:12px 14px; border-radius:10px; border:0; cursor:pointer; font-weight:700; font-size:14px; }
+    .btn-primary { background:linear-gradient(90deg,#fff 0%, #f3f3f3 100%); color:#000; }
+    .muted { font-size:12px; color:#9a9a9a; margin-top:8px; display:block; text-align:center; }
+    .small { font-size:12px; color:#bfbfbf; }
+    canvas { display:block; width:100%; height:100%; }
+
+    /* mobile adjustments */
+    @media (max-width:900px) {
+      #app { flex-direction:column; }
+      .right { width:100%; max-width:520px; }
+      .left { width:100%; height:60vh; }
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <div class="left card">
+      <!-- 3D Canvas container -->
+      <div id="canvas-container" style="width:100%;height:100%;position:relative;">
+        <canvas id="bg"></canvas>
+        <!-- overlay content -->
+        <div style="position:absolute;left:24px;top:24px;pointer-events:none;">
+          <h1>Indrashachi</h1>
+          <p class="lead">Personal astrology guidance • Secure online payment • WhatsApp confirmation</p>
+        </div>
+        <div style="position:absolute;right:24px;bottom:24px;pointer-events:none;">
+          <div class="small">Interactive zodiac wheel • Move mouse to orbit</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="right">
+      <div class="card">
+        <h1>Book Consultation</h1>
+        <p class="lead">Fill details → Pay → Get WhatsApp confirmation</p>
+
+        <label for="name">Full name</label>
+        <input id="name" placeholder="Your name" />
+
+        <label for="phone">Phone (WhatsApp) — include country code</label>
+        <input id="phone" placeholder="e.g. 919876543210" />
+
+        <label for="dob">Date of Birth</label>
+        <input id="dob" placeholder="DD-MM-YYYY" />
+
+        <label for="tob">Time of Birth</label>
+        <input id="tob" placeholder="HH:MM (24h)" />
+
+        <label for="pob">Place of Birth</label>
+        <input id="pob" placeholder="City, Country" />
+
+        <label for="service">Service</label>
+        <select id="service">
+          <option value="quick-consult" data-amount="29900">Quick Consult (15 min) — ₹299</option>
+          <option value="detailed-consult" data-amount="79900">Detailed Consult (45 min) — ₹799</option>
+          <option value="kundli-report" data-amount="49900">Kundli + Remedies (PDF) — ₹499</option>
+        </select>
+
+        <label for="question">Your Question (short)</label>
+        <textarea id="question" rows="3" placeholder="What would you like guidance on?"></textarea>
+
+        <button id="payBtn" class="btn-primary">Pay & Book</button>
+        <div class="muted">By continuing you agree to our terms. Payments powered by Razorpay.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Razorpay Checkout -->
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+  <!-- Three.js from CDN -->
+  <script src="https://unpkg.com/three@0.159.0/build/three.min.js"></script>
+  <script src="https://unpkg.com/three@0.159.0/examples/js/controls/OrbitControls.js"></script>
+
+  <script>
+  /***** ====== CONFIG - Replace these ====== *****/
+  const RAZORPAY_KEY = "rzp_test_YOUR_KEY_HERE";          // <- put your Razorpay Key ID
+  const ADMIN_WHATSAPP_E164 = "919226601792";            // <- admin number (E.164) (you gave)
+  const SITE_NAME = "Indrashachi";
+  /***********************************************/
+
+  // ---------------- Three.js: starfield + rotating torus ----------------
+  (function(){
+    const canvas = document.getElementById('bg');
+    const renderer = new THREE.WebGLRenderer({ canvas, antialias:true, alpha:true });
+    const DPR = Math.min(window.devicePixelRatio || 1, 2);
+    renderer.setPixelRatio(DPR);
+    renderer.setSize(canvas.clientWidth, canvas.clientHeight, false);
+
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x05050a, 0.002);
+
+    const camera = new THREE.PerspectiveCamera(50, canvas.clientWidth / canvas.clientHeight, 0.1, 1000);
+    camera.position.set(0, 0, 6);
+
+    // starfield (Points)
+    const starGeo = new THREE.BufferGeometry();
+    const starCount = 4000;
+    const positions = new Float32Array(starCount * 3);
+    for (let i=0;i<starCount;i++){
+      const r = THREE.MathUtils.randFloatSpread(160);
+      positions[i*3] = THREE.MathUtils.randFloatSpread(120);
+      positions[i*3+1] = THREE.MathUtils.randFloatSpread(60);
+      positions[i*3+2] = THREE.MathUtils.randFloatSpread(120);
+    }
+    starGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    const starMat = new THREE.PointsMaterial({ size:0.08, sizeAttenuation:true, transparent:true, opacity:0.9, color:0xffffff });
+    const stars = new THREE.Points(starGeo, starMat);
+    scene.add(stars);
+
+    // rotating torus (zodiac wheel feel)
+    const torusGeom = new THREE.TorusGeometry(1.8, 0.12, 32, 200);
+    const torusMat = new THREE.MeshStandardMaterial({ 
+      color: 0x8a7bff, emissive: 0x3f2fff, metalness:0.2, roughness:0.35, emissiveIntensity:0.6
+    });
+    const torus = new THREE.Mesh(torusGeom, torusMat);
+    torus.rotation.x = Math.PI * 0.12;
+    scene.add(torus);
+
+    // little orbiting spheres to represent zodiac markers
+    const markers = new THREE.Group();
+    const markerGeom = new THREE.SphereGeometry(0.06, 12, 12);
+    const markerMat = new THREE.MeshStandardMaterial({ color:0xffdd88, emissive:0xffa94d, metalness:0.1, roughness:0.7 });
+    const count = 12;
+    for (let i=0;i<count;i++){
+      const m = new THREE.Mesh(markerGeom, markerMat);
+      const ang = (i / count) * Math.PI * 2;
+      const radius = 1.95;
+      m.position.set(Math.cos(ang)*radius, Math.sin(ang)*radius*0.5, Math.sin(ang)*0.8);
+      markers.add(m);
+    }
+    scene.add(markers);
+
+    // gentle lights
+    const amb = new THREE.AmbientLight(0xffffff, 0.25);
+    scene.add(amb);
+    const dir = new THREE.DirectionalLight(0xfff2dd, 0.6);
+    dir.position.set(5,5,5);
+    scene.add(dir);
+
+    // controls (mouse orbit)
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enablePan = false;
+    controls.enableZoom = false;
+    controls.autoRotate = true;
+    controls.autoRotateSpeed = 0.15;
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.03;
+
+    // resize handling
+    function resize(){
+      const w = canvas.clientWidth || canvas.offsetWidth || window.innerWidth * 0.6;
+      const h = canvas.clientHeight || canvas.offsetHeight || window.innerHeight * 0.7;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    // animate
+    let t = 0;
+    function animate(){
+      t += 0.005;
+      stars.rotation.y += 0.0006;
+      torus.rotation.z += 0.0022;
+      torus.rotation.y = Math.sin(t * 0.4) * 0.08;
+      markers.rotation.z -= 0.0018;
+      controls.update();
+      renderer.render(scene, camera);
+      requestAnimationFrame(animate);
+    }
+    animate();
+  })();
+
+  // ---------------- Payment & WhatsApp flow ----------------
+  (function(){
+    const payBtn = document.getElementById('payBtn');
+
+    function getFormData(){
+      return {
+        name: document.getElementById('name').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        dob: document.getElementById('dob').value.trim(),
+        tob: document.getElementById('tob').value.trim(),
+        pob: document.getElementById('pob').value.trim(),
+        service: document.getElementById('service').value,
+        question: document.getElementById('question').value.trim(),
+      };
+    }
+
+    function validate(f){
+      if(!f.name) return "Please enter name";
+      if(!f.phone) return "Please enter phone (with country code)";
+      return null;
+    }
+
+    async function openRazorpayCheckout(amountPaise, prefill){
+      // This uses client-side Checkout. For production create an order server-side and use order_id.
+      const options = {
+        key: RAZORPAY_KEY,
+        amount: amountPaise,
+        currency: "INR",
+        name: SITE_NAME,
+        description: prefill.service,
+        image: "", // optional
+        handler: function (response){
+          // response.razorpay_payment_id etc.
+          onPaymentSuccess(prefill, response);
+        },
+        prefill: { name: prefill.name, contact: prefill.phone },
+        theme: { color: "#111827" }
+      };
+      const rzp = new Razorpay(options);
+      rzp.open();
+    }
+
+    async function onPaymentSuccess(form, razorpayResponse){
+      // Compose message for WhatsApp to admin
+      const msgLines = [
+        `New Booking — ${SITE_NAME}`,
+        `Name: ${form.name}`,
+        `Phone: ${form.phone}`,
+        `Service: ${form.service}`,
+        `DOB: ${form.dob}  TOB: ${form.tob}`,
+        `POB: ${form.pob}`,
+        `Q: ${form.question || '-'}`,
+        `PaymentID: ${razorpayResponse.razorpay_payment_id}`
+      ];
+      const msg = encodeURIComponent(msgLines.join('\\n'));
+      // Open WhatsApp (admin)
+      const waUrl = `https://wa.me/${ADMIN_WHATSAPP_E164}?text=${msg}`;
+      // Also open user's WhatsApp pre-fill so they get confirmation (optional)
+      const userMsg = encodeURIComponent(`Thank you ${form.name}! Your payment successful. Payment ID: ${razorpayResponse.razorpay_payment_id}`);
+      const userWa = `https://wa.me/${form.phone.replace(/[^0-9]/g,'')}?text=${userMsg}`;
+
+      // Open admin chat in new tab
+      window.open(waUrl, '_blank');
+      // Try to open user's wa to help them confirm (non-blocking)
+      setTimeout(()=> {
+        try { window.open(userWa, '_blank'); } catch(e){}
+      }, 400);
+
+      alert('Payment successful — WhatsApp notification sent to admin.');
+      // you can also redirect to thank-you page:
+      // location.href = '/thank-you.html';
+    }
+
+    payBtn.addEventListener('click', async function(){
+      const form = getFormData();
+      const err = validate(form);
+      if(err) { alert(err); return; }
+
+      const sel = document.getElementById('service');
+      const opt = sel.options[sel.selectedIndex];
+      const amount = Number(opt.dataset.amount || 29900); // in paise
+      // For production: create order server-side and pass order_id to Checkout for security.
+      openRazorpayCheckout(amount, {...form, service: opt.text});
+    });
+  })();
+  </script>
+</body>
+</html>
