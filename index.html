@@ -1,400 +1,130 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Indrashachi — Divine Astrology & Consultations</title>
-  <meta name="description" content="Indrashachi | Palmistry • Kundali • Match Making • Horoscope" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Indrashachi Astrology</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
   <style>
-    /* ---------- Layout & UI ---------- */
-    html,body { height:100%; margin:0; font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; background:#03030a; color:#fff; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;}
-    #wrap { display:flex; min-height:100vh; gap:28px; padding:28px; box-sizing:border-box; align-items:center; justify-content:center; }
-    .scene { flex:1 1 900px; min-width:360px; height:78vh; border-radius:18px; overflow:hidden; position:relative; box-shadow: 0 30px 80px rgba(0,0,0,0.7); border:1px solid rgba(255,255,255,0.03); background:linear-gradient(180deg,#02020a 0%, #05051a 100%); }
-    .panel { width:380px; max-width:92vw; min-width:300px; align-self:flex-start; }
-    .card { padding:18px; border-radius:14px; background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015)); border:1px solid rgba(255,255,255,0.04); backdrop-filter: blur(6px); box-shadow: 0 8px 30px rgba(0,0,0,0.5); }
-    h1.title { margin:0 0 6px 0; font-size:20px; letter-spacing:.4px; }
-    p.lead { margin:0 0 14px 0; color:#cfcfe0; font-size:13px; }
-    label { display:block; font-size:12px; color:#d0d0e0; margin-bottom:6px; }
-    input, select, textarea { width:100%; padding:10px 12px; border-radius:10px; border:1px solid rgba(255,255,255,0.06); background: rgba(10,8,14,0.6); color:#fff; margin-bottom:12px; box-sizing:border-box; font-size:13px; outline:none; }
-    .btn { width:100%; padding:12px 14px; border-radius:10px; border:0; cursor:pointer; font-weight:700; font-size:14px; }
-    .btn-primary { background:linear-gradient(90deg,#fff 0%, #f3f3f3 100%); color:#0b0b10; }
-    .muted { font-size:12px; color:#9a9a9a; text-align:center; margin-top:10px; }
-    .brand { position:absolute; left:20px; top:18px; z-index:10; background:rgba(0,0,0,0.25); padding:8px 12px; border-radius:10px; border:1px solid rgba(255,255,255,0.03); }
-    .brand strong { display:block; font-size:14px; }
-    .subtitle { font-size:12px; color:#d0d0e0; }
-    canvas { display:block; width:100%; height:100%; }
-
-    /* Responsive */
-    @media (max-width:980px) {
-      #wrap { flex-direction:column; align-items:stretch; padding:16px; }
-      .scene { height:56vh; order:2; }
-      .panel { order:1; margin-bottom:12px; }
+    body, html { margin: 0; padding: 0; background: black; color: white; }
+    canvas { position: fixed; top: 0; left: 0; z-index: -1; }
+    .glass {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(10px);
     }
   </style>
 </head>
+<body class="font-sans">
 
-<body>
-  <div id="wrap">
-    <!-- 3D Scene -->
-    <div class="scene card" id="scene">
-      <div class="brand">
-        <strong>Indrashachi</strong>
-        <span class="subtitle">Divine Guidance • Secure Payments • WhatsApp Confirm</span>
-      </div>
-      <canvas id="three-canvas"></canvas>
+  <!-- Hero -->
+  <section class="h-screen flex flex-col justify-center items-center text-center relative">
+    <h1 class="text-5xl font-extrabold text-yellow-400 drop-shadow-lg">Indrashachi Astrology</h1>
+    <p class="mt-4 text-lg text-gray-300">Divine Guidance • Temple of Stars • Trusted Consultations</p>
+    <div class="mt-10">
+      <a href="#services" class="px-6 py-3 rounded-xl bg-yellow-500 hover:bg-yellow-600 text-black font-bold shadow-lg">
+        Explore Services
+      </a>
     </div>
+  </section>
 
-    <!-- Booking Panel -->
-    <div class="panel">
-      <div class="card">
-        <h1 class="title">Book Consultation</h1>
-        <p class="lead">Choose service, pay securely, get WhatsApp confirmation.</p>
+  <!-- Services -->
+  <section id="services" class="py-16 container mx-auto px-6 grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+    <div class="glass p-6 rounded-2xl text-center shadow-xl">
+      <h3 class="text-2xl font-bold mb-2">Palmistry</h3>
+      <p class="text-gray-300">Hand reading & life insights.</p>
+      <p class="text-yellow-400 font-bold mt-3">₹299</p>
+    </div>
+    <div class="glass p-6 rounded-2xl text-center shadow-xl">
+      <h3 class="text-2xl font-bold mb-2">Kundali</h3>
+      <p class="text-gray-300">Detailed horoscope & remedies.</p>
+      <p class="text-yellow-400 font-bold mt-3">₹499</p>
+    </div>
+    <div class="glass p-6 rounded-2xl text-center shadow-xl">
+      <h3 class="text-2xl font-bold mb-2">Match Making</h3>
+      <p class="text-gray-300">Compatibility analysis for couples.</p>
+      <p class="text-yellow-400 font-bold mt-3">₹799</p>
+    </div>
+    <div class="glass p-6 rounded-2xl text-center shadow-xl">
+      <h3 class="text-2xl font-bold mb-2">Horoscope</h3>
+      <p class="text-gray-300">Daily & yearly astrology guidance.</p>
+      <p class="text-yellow-400 font-bold mt-3">₹399</p>
+    </div>
+  </section>
 
-        <label for="name">Full name</label>
-        <input id="name" placeholder="Your name" />
-
-        <label for="phone">Phone (WhatsApp) — include country code</label>
-        <input id="phone" placeholder="e.g. 919876543210" />
-
-        <label for="dob">Date of Birth</label>
-        <input id="dob" placeholder="DD-MM-YYYY" />
-
-        <label for="tob">Time of Birth</label>
-        <input id="tob" placeholder="HH:MM (24h)" />
-
-        <label for="pob">Place of Birth</label>
-        <input id="pob" placeholder="City, Country" />
-
-        <label for="service">Service</label>
-        <select id="service">
-          <option value="palmistry" data-amount="29900">Palmistry — ₹299</option>
-          <option value="kundali" data-amount="49900">Kundali — ₹499</option>
-          <option value="match-making" data-amount="79900">Match Making — ₹799</option>
-          <option value="horoscope" data-amount="39900">Horoscope — ₹399</option>
+  <!-- Booking Form -->
+  <section id="book" class="py-16 container mx-auto px-6">
+    <div class="glass p-8 rounded-2xl max-w-lg mx-auto shadow-xl">
+      <h2 class="text-3xl font-bold mb-6 text-center">Book a Consultation</h2>
+      <form id="bookingForm" class="space-y-4">
+        <input type="text" id="name" placeholder="Your Name" class="w-full p-3 rounded-lg text-black" required>
+        <input type="date" id="dob" class="w-full p-3 rounded-lg text-black" required>
+        <select id="service" class="w-full p-3 rounded-lg text-black" required>
+          <option value="Palmistry" data-amount="29900">Palmistry — ₹299</option>
+          <option value="Kundali" data-amount="49900">Kundali — ₹499</option>
+          <option value="Match Making" data-amount="79900">Match Making — ₹799</option>
+          <option value="Horoscope" data-amount="39900">Horoscope — ₹399</option>
         </select>
-
-        <label for="question">Your Question (short)</label>
-        <textarea id="question" rows="3" placeholder="What would you like guidance on?"></textarea>
-
-        <button id="payBtn" class="btn btn-primary">Pay & Book</button>
-        <div class="muted">Payments powered by Razorpay • WhatsApp confirmation to admin.</div>
-      </div>
+        <button type="button" onclick="payNow()" class="w-full py-3 bg-yellow-500 hover:bg-yellow-600 text-black font-bold rounded-lg">Pay & Book</button>
+      </form>
     </div>
-  </div>
+  </section>
 
-  <!-- Razorpay -->
-  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-
-  <!-- Three.js core (CDN) -->
-  <script src="https://unpkg.com/three@0.159.0/build/three.min.js"></script>
-  <script src="https://unpkg.com/three@0.159.0/examples/js/controls/OrbitControls.js"></script>
-
+  <!-- 3D Background Script -->
   <script>
-  /****************************************************************
-   * CONFIG - Replace these values for production
-   ****************************************************************/
-  const RAZORPAY_KEY = "rzp_test_YOUR_KEY_HERE";   // <- replace
-  const ADMIN_WHATSAPP_E164 = "919226601792";      // admin number (E.164)
-  const SITE_NAME = "Indrashachi";
-  /****************************************************************/
-
-  /* ========== 3D Temple Scene (Three.js) ========== */
-  (function () {
-    const canvas = document.getElementById('three-canvas');
-    const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
-    renderer.setSize(canvas.clientWidth || 800, canvas.clientHeight || 600, false);
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.outputEncoding = THREE.sRGBEncoding;
-
     const scene = new THREE.Scene();
-    scene.background = new THREE.Color(0x04030a);
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ alpha: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
 
-    // Camera
-    const camera = new THREE.PerspectiveCamera(45, canvas.clientWidth / canvas.clientHeight, 0.1, 2000);
-    camera.position.set(0, 2.2, 10);
-
-    // Ambient and rim light
-    const amb = new THREE.AmbientLight(0xffffff, 0.18);
-    scene.add(amb);
-
-    // Warm key light simulating lamp
-    const key = new THREE.PointLight(0xfff2d1, 1.2, 40, 2);
-    key.position.set(0, 6, 6);
-    scene.add(key);
-
-    // Soft rim light from back
-    const rim = new THREE.PointLight(0x7ea6ff, 0.4, 50, 2);
-    rim.position.set(-8, 4, -8);
-    scene.add(rim);
-
-    // Floor + reflection-like plane
-    const floor = new THREE.Mesh(
-      new THREE.CircleGeometry(18, 64),
-      new THREE.MeshStandardMaterial({ color: 0x07060b, roughness: 0.6, metalness: 0.05 })
-    );
-    floor.rotation.x = -Math.PI / 2;
-    floor.position.y = -1.2;
-    scene.add(floor);
-
-    // --- Stylized Temple architecture using primitives ---
-    const temple = new THREE.Group();
-
-    const stepMat = new THREE.MeshStandardMaterial({ color: 0x0f0d13, roughness: 0.7, metalness: 0.02 });
-    for (let i = 0; i < 4; i++) {
-      const step = new THREE.Mesh(new THREE.CylinderGeometry(6 - i * 0.9, 6 - i * 0.9, 0.45, 64), stepMat);
-      step.position.y = -1.2 + i * 0.45;
-      temple.add(step);
+    // Stars
+    const starGeometry = new THREE.BufferGeometry();
+    const starCount = 2000;
+    const starPositions = [];
+    for (let i=0; i<starCount; i++) {
+      starPositions.push((Math.random() - 0.5) * 2000);
+      starPositions.push((Math.random() - 0.5) * 2000);
+      starPositions.push((Math.random() - 0.5) * 2000);
     }
+    starGeometry.setAttribute("position", new THREE.Float32BufferAttribute(starPositions, 3));
+    const starMaterial = new THREE.PointsMaterial({ color: 0xffffff });
+    const stars = new THREE.Points(starGeometry, starMaterial);
+    scene.add(stars);
 
-    // Pillars (left and right)
-    const pillarMat = new THREE.MeshStandardMaterial({ color: 0x1b1622, roughness: 0.5, metalness: 0.03 });
-    function makePillar(x, z) {
-      const g = new THREE.CylinderGeometry(0.28, 0.28, 3.2, 24);
-      const m = new THREE.Mesh(g, pillarMat);
-      m.position.set(x, 0.6, z);
-      return m;
-    }
-    temple.add(makePillar(-2.6, -0.6));
-    temple.add(makePillar(-2.6, 0.6));
-    temple.add(makePillar(2.6, -0.6));
-    temple.add(makePillar(2.6, 0.6));
-
-    // Roof slab
-    const roofMat = new THREE.MeshStandardMaterial({ color: 0x261a3b, roughness: 0.45, metalness: 0.05 });
-    const roof = new THREE.Mesh(new THREE.BoxGeometry(6.8, 0.3, 3.2), roofMat);
-    roof.position.set(0, 2.2, 0);
-    temple.add(roof);
-
-    // Arch / mandap behind deity - torus / ring-like
-    const archMat = new THREE.MeshStandardMaterial({ color: 0x8a6cff, emissive: 0x2b0eff, emissiveIntensity: 0.03, roughness: 0.4 });
-    const ring = new THREE.Mesh(new THREE.TorusGeometry(2.6, 0.18, 32, 200), archMat);
-    ring.rotation.x = Math.PI * 0.45;
-    ring.position.set(0, 1.2, -0.6);
-    temple.add(ring);
-
-    scene.add(temple);
-
-    // --- Deity silhouette (glowing plane + simple mesh) ---
-    // Create a stylized silhouette texture using canvas (no external assets)
-    function createSilhouetteTexture() {
-      const c = document.createElement('canvas');
-      c.width = 512; c.height = 1024;
-      const ctx = c.getContext('2d');
-      // Background transparent
-      ctx.clearRect(0, 0, c.width, c.height);
-      // Draw a simple deity-like silhouette (abstract)
-      ctx.fillStyle = 'rgba(255,255,255,1)';
-      ctx.beginPath();
-      // Head
-      ctx.ellipse(256, 160, 64, 82, 0, 0, Math.PI * 2);
-      // Body
-      ctx.moveTo(120, 320);
-      ctx.bezierCurveTo(120, 500, 392, 500, 392, 320);
-      ctx.lineTo(320, 880);
-      ctx.lineTo(192, 880);
-      ctx.closePath();
-      ctx.fill();
-
-      // create gradient alpha to soften edges
-      const g = ctx.createLinearGradient(0, 0, 0, c.height);
-      g.addColorStop(0, 'rgba(255,255,255,1)');
-      g.addColorStop(0.7, 'rgba(255,255,255,0.7)');
-      g.addColorStop(1, 'rgba(255,255,255,0.28)');
-      ctx.globalCompositeOperation = 'source-atop';
-      ctx.fillStyle = g;
-      ctx.fillRect(0, 0, c.width, c.height);
-
-      const tex = new THREE.CanvasTexture(c);
-      tex.encoding = THREE.sRGBEncoding;
-      return tex;
-    }
-
-    const silTex = createSilhouetteTexture();
-    const silhouette = new THREE.Mesh(
-      new THREE.PlaneGeometry(2.2, 3.2, 1, 1),
-      new THREE.MeshBasicMaterial({ map: silTex, transparent: true, opacity: 0.98, depthWrite: false })
-    );
-    silhouette.position.set(0, 1.2, -0.3);
-    scene.add(silhouette);
-
-    // Glow sprite behind deity (additive)
-    const spriteMat = new THREE.SpriteMaterial({
-      map: createGlowCanvas(512),
-      color: 0xfff0c8,
-      transparent: true,
-      blending: THREE.AdditiveBlending,
-      depthWrite: false,
-      opacity: 0.85
-    });
-    const glow = new THREE.Sprite(spriteMat);
-    glow.scale.set(6, 6, 1);
-    glow.position.set(0, 1.1, -1.2);
-    scene.add(glow);
-
-    // Volumetric light cone (transparent cone)
-    const coneGeo = new THREE.ConeGeometry(2.8, 6, 32, 1, true);
-    const coneMat = new THREE.MeshStandardMaterial({ color: 0xfff1d6, transparent: true, opacity: 0.06, side: THREE.DoubleSide });
-    const cone = new THREE.Mesh(coneGeo, coneMat);
-    cone.position.set(0, 2.2, -1.2);
-    cone.rotation.x = Math.PI;
-    scene.add(cone);
-
-    // Floating particles / fireflies
-    const partGeo = new THREE.BufferGeometry();
-    const pcount = 160;
-    const ppos = new Float32Array(pcount * 3);
-    for (let i = 0; i < pcount; i++) {
-      ppos[i * 3] = (Math.random() - 0.5) * 6;
-      ppos[i * 3 + 1] = Math.random() * 3 + 0.2;
-      ppos[i * 3 + 2] = (Math.random() - 0.5) * 5;
-    }
-    partGeo.setAttribute('position', new THREE.BufferAttribute(ppos, 3));
-    const partMat = new THREE.PointsMaterial({ size: 0.06, sizeAttenuation: true, transparent: true, opacity: 0.9, color: 0xffd98a });
-    const particles = new THREE.Points(partGeo, partMat);
-    scene.add(particles);
-
-    // small reflective "oil lamps" on steps
-    const lampMat = new THREE.MeshStandardMaterial({ color: 0xffb86b, emissive: 0xff7a1a, emissiveIntensity: 0.9, roughness: 0.6 });
-    for (let i = -2; i <= 2; i += 2) {
-      const lp = new THREE.Mesh(new THREE.SphereGeometry(0.08, 12, 12), lampMat);
-      lp.position.set(i * 1.4, -0.48, 0.4 + (i % 2) * 0.06);
-      scene.add(lp);
-    }
-
-    // Controls - very subtle
-    const controls = new THREE.OrbitControls(camera, renderer.domElement);
-    controls.enablePan = false;
-    controls.enableZoom = false;
-    controls.autoRotate = true;
-    controls.autoRotateSpeed = 0.08;
-    controls.minPolarAngle = Math.PI * 0.25;
-    controls.maxPolarAngle = Math.PI * 0.9;
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.06;
-
-    // Resize handling
-    function resize() {
-      const w = canvas.clientWidth || canvas.parentElement.clientWidth;
-      const h = canvas.clientHeight || canvas.parentElement.clientHeight;
-      renderer.setSize(w, h, false);
-      camera.aspect = w / h;
-      camera.updateProjectionMatrix();
-    }
-    window.addEventListener('resize', resize);
-    resize();
-
-    // animate
-    let time = 0;
+    camera.position.z = 5;
     function animate() {
-      time += 0.01;
-      particles.rotation.y = Math.sin(time * 0.12) * 0.06;
-      ring.rotation.y = Math.sin(time * 0.07) * 0.04;
-      glow.material.opacity = 0.7 + Math.sin(time * 0.5) * 0.15;
-      silhouette.rotation.y = Math.sin(time * 0.03) * 0.02;
-      controls.update();
-      renderer.render(scene, camera);
       requestAnimationFrame(animate);
+      stars.rotation.y += 0.0005;
+      renderer.render(scene, camera);
     }
     animate();
 
-    // helper: glow canvas
-    function createGlowCanvas(size) {
-      const c = document.createElement('canvas');
-      c.width = c.height = size;
-      const ctx = c.getContext('2d');
-      const g = ctx.createRadialGradient(size / 2, size / 2, 10, size / 2, size / 2, size / 1.6);
-      g.addColorStop(0, 'rgba(255,245,210,1)');
-      g.addColorStop(0.3, 'rgba(255,210,120,0.9)');
-      g.addColorStop(0.6, 'rgba(255,160,60,0.5)');
-      g.addColorStop(1, 'rgba(255,120,10,0.05)');
-      ctx.fillStyle = g;
-      ctx.fillRect(0, 0, size, size);
-      const tex = new THREE.CanvasTexture(c);
-      tex.encoding = THREE.sRGBEncoding;
-      return tex;
-    }
+    // Razorpay + WhatsApp
+    function payNow() {
+      const name = document.getElementById("name").value;
+      const dob = document.getElementById("dob").value;
+      const serviceSelect = document.getElementById("service");
+      const service = serviceSelect.value;
+      const amount = serviceSelect.selectedOptions[0].getAttribute("data-amount");
 
-  })();
-
-  /* ========== Payment + WhatsApp flow (client-side demo) ========== */
-  (function () {
-    const payBtn = document.getElementById('payBtn');
-
-    function getFormData() {
-      return {
-        name: document.getElementById('name').value.trim(),
-        phone: document.getElementById('phone').value.trim(),
-        dob: document.getElementById('dob').value.trim(),
-        tob: document.getElementById('tob').value.trim(),
-        pob: document.getElementById('pob').value.trim(),
-        service: document.getElementById('service').value,
-        question: document.getElementById('question').value.trim(),
-      };
-    }
-
-    function validate(f) {
-      if (!f.name) return "Please enter name";
-      if (!f.phone) return "Please enter phone (with country code)";
-      if (!f.dob) return "Please enter date of birth";
-      return null;
-    }
-
-    function openRazorpay(amountPaise, prefill) {
       const options = {
-        key: RAZORPAY_KEY,
-        amount: amountPaise,
+        key: "rzp_test_1234567890", // <-- apna Razorpay key id daalo
+        amount: amount,
         currency: "INR",
-        name: SITE_NAME,
-        description: prefill.service,
+        name: "Indrashachi Astrology",
+        description: service,
         handler: function (response) {
-          onPaymentSuccess(prefill, response);
-        },
-        prefill: { name: prefill.name, contact: prefill.phone },
-        theme: { color: "#111827" }
+          alert("Payment Successful!");
+          const msg = `New Booking:%0AName: ${name}%0ADOB: ${dob}%0AService: ${service}%0APayment ID: ${response.razorpay_payment_id}`;
+          window.open(`https://wa.me/919226601792?text=${msg}`, "_blank");
+        }
       };
       const rzp = new Razorpay(options);
       rzp.open();
     }
-
-    function onPaymentSuccess(form, rzpResp) {
-      const lines = [
-        `New Booking — ${SITE_NAME}`,
-        `Name: ${form.name}`,
-        `Phone: ${form.phone}`,
-        `Service: ${form.service}`,
-        `DOB: ${form.dob}  TOB: ${form.tob}`,
-        `POB: ${form.pob}`,
-        `Q: ${form.question || '-'}`,
-        `PaymentID: ${rzpResp.razorpay_payment_id}`
-      ];
-      const text = encodeURIComponent(lines.join('\n'));
-      const adminWa = `https://wa.me/${ADMIN_WHATSAPP_E164}?text=${text}`;
-      const userWa = `https://wa.me/${form.phone.replace(/[^0-9]/g,'')}?text=${encodeURIComponent("Thank you! Your payment was successful. Payment ID: " + rzpResp.razorpay_payment_id)}`;
-
-      // Open admin WhatsApp to notify
-      window.open(adminWa, '_blank');
-      // Optionally open user's WhatsApp (non-blocking)
-      setTimeout(() => { try { window.open(userWa, '_blank'); } catch (e) { } }, 500);
-
-      alert('Payment successful — WhatsApp notification sent to admin.');
-      // redirect or clear form if you want
-    }
-
-    payBtn.addEventListener('click', function () {
-      const form = getFormData();
-      const err = validate(form);
-      if (err) { alert(err); return; }
-
-      const sel = document.getElementById('service');
-      const opt = sel.options[sel.selectedIndex];
-      const amount = Number(opt.dataset.amount || opt.getAttribute('data-amount') || 29900);
-
-      // NOTE: This uses client-only checkout for demo.
-      // For production: create Razorpay Order server-side and pass order_id to Checkout for secure flow.
-      openRazorpay(amount, { ...form, service: opt.text });
-    });
-  })();
   </script>
 </body>
 </html>
